@@ -1,125 +1,124 @@
-"use client";
+import { BRAND } from "@/types/brand";
+import Image from "next/image";
+import DropdownDefault from "../Dropdowns/DropdownDefault";
 
-import { useState, useEffect } from "react";
-import api from "@/api";
+const brandData: BRAND[] = [
+  {
+    logo: "/images/brand/brand-01.svg",
+    name: "Google",
+    visitors: 3.5,
+    revenues: "5,768",
+    sales: 590,
+    conversion: 4.8,
+  },
+  {
+    logo: "/images/brand/brand-02.svg",
+    name: "Twitter",
+    visitors: 2.2,
+    revenues: "4,635",
+    sales: 467,
+    conversion: 4.3,
+  },
+  {
+    logo: "/images/brand/brand-06.svg",
+    name: "Youtube",
+    visitors: 2.1,
+    revenues: "4,290",
+    sales: 420,
+    conversion: 3.7,
+  },
+  {
+    logo: "/images/brand/brand-04.svg",
+    name: "Vimeo",
+    visitors: 1.5,
+    revenues: "3,580",
+    sales: 389,
+    conversion: 2.5,
+  },
+  {
+    logo: "/images/brand/brand-05.svg",
+    name: "Facebook",
+    visitors: 3.5,
+    revenues: "6,768",
+    sales: 390,
+    conversion: 4.2,
+  },
+];
 
-interface Client {
-  _id: string;
-  clientId: string;
-  email: string;
-  mobile: string;
-  userType: number;
-  status: number;
-  createdAt: string;
-  modifiedAt: string;
-}
-
-const ClientTable = () => {
-  const [clients, setClients] = useState<Client[]>([]);
-  const [sortField, setSortField] = useState<keyof Client>("createdAt");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  useEffect(() => {
-    const fetchClients = async () => {
-      try {
-        const response = await api.get("api/admin/getClients", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        });
-        if (response.status !== 200) {
-          throw new Error("Failed to fetch clients");
-        }
-        const data = response.data;
-        setClients(data);
-      } catch (error) {
-        console.error("Error fetching clients:", error);
-      }
-    };
-
-    fetchClients();
-  }, []);
-
-  const handleSort = (field: keyof Client) => {
-    const order = sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(order);
-
-    const sortedClients = [...clients].sort((a, b) => {
-      if (a[field] < b[field]) return order === "asc" ? -1 : 1;
-      if (a[field] > b[field]) return order === "asc" ? 1 : -1;
-      return 0;
-    });
-
-    setClients(sortedClients);
-  };
-
+const TableFour: React.FC = () => {
   return (
-    <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-      <div className="flex justify-between mb-5">
-        <h2 className="text-lg font-medium text-black dark:text-white">Client Users</h2>
-      </div>
-      <div className="max-w-full overflow-x-auto">
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th
-                className="min-w-[200px] px-4 py-4 font-medium text-black dark:text-white cursor-pointer"
-                onClick={() => handleSort("email")}
-              >
-                Email {sortField === "email" && (sortOrder === "asc" ? "↑" : "↓")}
-              </th>
-              <th
-                className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white cursor-pointer"
-                onClick={() => handleSort("mobile")}
-              >
-                Mobile {sortField === "mobile" && (sortOrder === "asc" ? "↑" : "↓")}
-              </th>
-              <th
-                className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white cursor-pointer"
-                onClick={() => handleSort("status")}
-              >
-                Status {sortField === "status" && (sortOrder === "asc" ? "↑" : "↓")}
-              </th>
-              <th
-                className="min-w-[200px] px-4 py-4 font-medium text-black dark:text-white cursor-pointer"
-                onClick={() => handleSort("createdAt")}
-              >
-                Created At {sortField === "createdAt" && (sortOrder === "asc" ? "↑" : "↓")}
-              </th>
-              <th
-                className="min-w-[200px] px-4 py-4 font-medium text-black dark:text-white cursor-pointer"
-                onClick={() => handleSort("modifiedAt")}
-              >
-                Modified At {sortField === "modifiedAt" && (sortOrder === "asc" ? "↑" : "↓")}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {clients.map((client) => (
-              <tr key={client._id}>
-                <td className="border-b border-[#eee] px-4 py-5 text-black dark:text-white">
-                  {client.email}
-                </td>
-                <td className="border-b border-[#eee] px-4 py-5 text-black dark:text-white">
-                  {client.mobile}
-                </td>
-                <td className="border-b border-[#eee] px-4 py-5 text-black dark:text-white">
-                  {client.status === 1 ? "Active" : "Inactive"}
-                </td>
-                <td className="border-b border-[#eee] px-4 py-5 text-black dark:text-white">
-                  {new Date(client.createdAt).toLocaleString()}
-                </td>
-                <td className="border-b border-[#eee] px-4 py-5 text-black dark:text-white">
-                  {new Date(client.modifiedAt).toLocaleString()}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="col-span-12 xl:col-span-7">
+      <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+        <div className="mb-6 flex justify-between">
+          <div>
+            <h4 className="text-title-sm2 font-bold text-black dark:text-white">
+              Top Channels
+            </h4>
+          </div>
+          <DropdownDefault />
+        </div>
+
+        <div className="flex flex-col">
+          <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-4">
+            <div className="p-2.5 xl:p-4">
+              <h5 className="text-sm font-medium uppercase xsm:text-base">
+                Source
+              </h5>
+            </div>
+            <div className="p-2.5 text-center xl:p-4">
+              <h5 className="text-sm font-medium uppercase xsm:text-base">
+                Visitors
+              </h5>
+            </div>
+            <div className="p-2.5 text-center xl:p-4">
+              <h5 className="text-sm font-medium uppercase xsm:text-base">
+                Revenues
+              </h5>
+            </div>
+            <div className="hidden p-2.5 text-center sm:block xl:p-4">
+              <h5 className="text-sm font-medium uppercase xsm:text-base">
+                Conversion
+              </h5>
+            </div>
+          </div>
+
+          {brandData.map((brand, key) => (
+            <div
+              className={`grid grid-cols-3 sm:grid-cols-4 ${
+                key === brandData.length - 1
+                  ? ""
+                  : "border-b border-stroke dark:border-strokedark"
+              }`}
+              key={key}
+            >
+              <div className="flex items-center gap-3 p-2.5 xl:p-5">
+                <div className="h-9 w-full max-w-9 flex-shrink-0">
+                  <Image src={brand.logo} width={60} height={50} alt="Brand" />
+                </div>
+                <p className="hidden font-medium text-black dark:text-white sm:block">
+                  {brand.name}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-center p-2.5 xl:p-5">
+                <p className="font-medium text-black dark:text-white">
+                  {brand.visitors}K
+                </p>
+              </div>
+
+              <div className="flex items-center justify-center p-2.5 xl:p-5">
+                <p className="font-medium text-meta-3">${brand.revenues}</p>
+              </div>
+
+              <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                <p className="font-medium text-meta-5">{brand.conversion}%</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
-export default ClientTable;
+export default TableFour;

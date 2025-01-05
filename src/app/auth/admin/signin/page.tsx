@@ -1,19 +1,23 @@
-"use client"
-import React from "react";
+"use client";
+import React, { FormEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import api from "@/api";
 import { useRouter } from "next/navigation";
-import { toast, Bounce } from "react-toastify";
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { toast, Bounce, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  GoogleReCaptchaProvider,
+  useGoogleReCaptcha,
+} from "react-google-recaptcha-v3";
 
 const SignIn: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const { executeRecaptcha } = useGoogleReCaptcha();
-  
+
   const router = useRouter();
 
   const handleSignIn = async () => {
@@ -21,13 +25,13 @@ const SignIn: React.FC = () => {
       toast.error("reCAPTCHA not ready. Please try again.", { theme: "light" });
       return;
     }
-    
+
     try {
       // Execute the reCAPTCHA and get the token
       const recaptchaToken = await executeRecaptcha("login");
-      
+
       // Include reCAPTCHA token in the login request
-      const response = await api.post('api/admin/login', {
+      const response = await api.post("api/admin/login", {
         email: username,
         password: password,
         recaptchaToken, // Pass the reCAPTCHA token
@@ -38,7 +42,7 @@ const SignIn: React.FC = () => {
 
         localStorage.setItem("authToken", token);
         localStorage.setItem("user_type", admin.user_type);
-        
+
         toast.success("Login successful!", {
           position: "top-right",
           autoClose: 5000,
@@ -65,7 +69,7 @@ const SignIn: React.FC = () => {
           theme: "light",
           transition: Bounce,
         });
-        
+
         setError("Invalid Credentials");
       }
     } catch (error: any) {
@@ -84,10 +88,21 @@ const SignIn: React.FC = () => {
       console.error("An error occurred during login:", error);
     }
   };
-  
-  return (
 
+  return (
     <div className="h-screen rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="flex flex-wrap items-center">
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
@@ -101,9 +116,7 @@ const SignIn: React.FC = () => {
               />
             </Link>
 
-            <p className="2xl:px-20">
-              Welcome to the Admin Panel
-            </p>
+            <p className="2xl:px-20">Welcome to the Admin Panel</p>
 
             <span className="mt-15 inline-block">
               <svg
@@ -282,8 +295,10 @@ const SignIn: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
-                  <Link href={"/auth/admin/forgot-password"}><div className="px-3 pt-1">Forgot password?</div></Link>
-               <div className="text-red-600 text-sm">{error}</div>
+                  <Link href={"/auth/admin/forgot-password"}>
+                    <div className="px-3 pt-1">Forgot password?</div>
+                  </Link>
+                  <div className="text-sm text-red-600">{error}</div>
                   <span className="absolute right-4 top-4">
                     <svg
                       className="fill-current"
@@ -309,14 +324,12 @@ const SignIn: React.FC = () => {
               </div>
 
               <div className="mb-5">
-                
                 <input
                   type="submit"
                   value="Sign In"
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                   onClick={() => handleSignIn()}
                 />
-              
               </div>
             </div>
           </div>
@@ -326,18 +339,10 @@ const SignIn: React.FC = () => {
   );
 };
 
-const App: React.FC = () => {
-  const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_KEY;
+const App: React.FC = () => (
+  <GoogleReCaptchaProvider reCaptchaKey="6LdE6KQqAAAAAIKrY4BbcAjKhHv1_36mt760Dgry">
+    <SignIn />
+  </GoogleReCaptchaProvider>
+);
 
-  if (!recaptchaKey) {
-    console.error('NEXT_PUBLIC_RECAPTCHA_KEY is not defined in the .env file');
-    return null; // Or render an appropriate error message
-  }
-
-  return (
-    <GoogleReCaptchaProvider reCaptchaKey={recaptchaKey}>
-      <SignIn />
-    </GoogleReCaptchaProvider>
-  );
-};
 export default App;

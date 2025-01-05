@@ -1,5 +1,5 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import TableThree from "../Tables/TableThree";
+import TableThree from "../Tables/TableThree_Admin";
 
 const allActivityLogs = () => {
   return (

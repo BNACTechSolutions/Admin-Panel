@@ -2,7 +2,7 @@
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
-import TableFive from "../Tables/TableFive";
+import TableFive from "../Tables/TableFive_Admin";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
