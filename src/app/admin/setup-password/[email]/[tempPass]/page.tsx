@@ -17,9 +17,9 @@ const SetupPassword = () => {
   useEffect(() => {
     // Extract email and tempPassword from the URL path
     const parts = pathname.split("/"); // Example: ["", "setup-password", "sriss2003@gmail.com", "tdk97xr7"]
-    if (parts.length === 4) {
-      setEmail(parts[2]);
-      setTempPassword(parts[3]);
+    if (parts.length === 5) {
+      setEmail(parts[3]);
+      setTempPassword(parts[4]);
     }
   }, [pathname]);
 
@@ -35,7 +35,7 @@ const SetupPassword = () => {
     };
 
     try {
-      const response = await api.post("/api/client/setup-password", payload);
+      const response = await api.post("/api/admin/setup-password", payload);
 
       if (response.status === 200) {
         toast.success("Password has been set successfully!", {
