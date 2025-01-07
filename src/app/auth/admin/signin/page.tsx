@@ -339,10 +339,21 @@ const SignIn: React.FC = () => {
   );
 };
 
-const App: React.FC = () => (
-  <GoogleReCaptchaProvider reCaptchaKey="6LdE6KQqAAAAAIKrY4BbcAjKhHv1_36mt760Dgry">
-    <SignIn />
-  </GoogleReCaptchaProvider>
-);
+const App: React.FC = () => {
+  const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_KEY;
+
+  if (!recaptchaKey) {
+    console.error('NEXT_PUBLIC_RECAPTCHA_KEY is not defined in the .env file');
+    return null; // Or render an appropriate error message
+  }
+
+
+  return (
+    <GoogleReCaptchaProvider reCaptchaKey={recaptchaKey}>
+      <SignIn />
+    </GoogleReCaptchaProvider>
+  );
+};
 
 export default App;
+
