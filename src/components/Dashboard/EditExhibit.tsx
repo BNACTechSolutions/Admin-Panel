@@ -7,6 +7,8 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
 import api from "@/api";
 import { ExhibitDataProps } from "@/types/exhibitdata";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useRouter, usePathname, useParams } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -20,23 +22,28 @@ const EditExhibit = () => {
   const params = useParams();
   const path = usePathname();
   const code = path.split("/").pop();
-  console.log("slug is", code);
-
   const [exhibitData, setExhibitData] = useState<ExhibitDataProps>();
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
   const [exhibitImage, setExhibitImage] = useState<File | null>(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchExhibitDetails = async () => {
       try {
         const response = await api.get(`/api/exhibit/${code}`);
         if (response.status !== 200) {
+          toast.error("Failed to fetch exhibits", {
+            position: "top-right",
+          });
           throw new Error("Failed to fetch exhibits");
         }
         const data = response.data;
         console.log("Exhibit data:", data);
         setExhibitData(data.exhibit);
+        setTitle(data.exhibit.title);
+        setDescription(data.exhibit.description);
       } catch (error) {
         console.error("Error fetching exhibit detail:", error);
       }
@@ -44,8 +51,56 @@ const EditExhibit = () => {
 
     fetchExhibitDetails();
   }, [code]);
+
+  const EditExhibit = async () => {
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("title", title || "");
+      formData.append("description", description || "");
+      if (exhibitImage) {
+        formData.append("titleImage", exhibitImage);
+      }
+
+      const response = await api.put(`/api/exhibit/${code}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+      if (response.status !== 200) {
+        toast.error("Failed to update exhibit", {
+          position: "top-right",
+        });
+        throw new Error("Failed to update exhibit");
+      }
+      setLoading(false);
+      toast.success("Exhibit updated successfully", {
+        position: "top-right",
+      });
+      
+
+    } catch (error) {
+      toast.error("Failed to update exhibit", {
+        position: "top-right",
+      })
+      console.error("Error updating exhibit:", error);
+      setLoading(false);
+    }
+  }
   return (
     <div className="mx-auto max-w-270">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Breadcrumb pageName="Edit Exhibit" />
 
       <div className="">
@@ -73,7 +128,8 @@ const EditExhibit = () => {
                         name="fullName"
                         id="fullName"
                         placeholder="Devid Jhon"
-                        value={exhibitData?.title}
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                       />
                     </div>
                   </div>
@@ -101,13 +157,15 @@ const EditExhibit = () => {
                   <FileDropZone
                     onFileUpload={(file: File) => setExhibitImage(file)}
                   />
-                  {exhibitImage && (
+                  {!exhibitImage && (
         <div className="mt-3">
-          <Image
-            src={URL.createObjectURL(exhibitImage)}
-            alt="Exhibit Preview"
-            className="rounded border border-stroke max-w-full h-auto"
-          />
+          {exhibitImage && (
+            <Image
+              src={URL.createObjectURL(exhibitData?.titleImage as Blob)}
+              alt="Exhibit Preview"
+              className="rounded border border-stroke max-w-full h-auto"
+            />
+          )}
         </div>
       )}
                 </div>
@@ -158,12 +216,13 @@ const EditExhibit = () => {
                     id="bio"
                     rows={6}
                     placeholder="Write your bio here"
-                    value={exhibitData?.description}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
                 </div>
 
-                <div className="flex flex-row items-start gap-6 pt-5 dark:text-white">
-                  {/* Video Upload Button */}
+                {/* <div className="flex flex-row items-start gap-6 pt-5 dark:text-white">
+                  
                   <div className="flex items-center gap-4">
                     <label className="flex cursor-pointer items-center gap-2 rounded-md bg-green-500 px-4 py-2 text-white transition hover:bg-green-600">
                       <Icon icon="mdi:video-plus" className="text-xl" />
@@ -181,7 +240,7 @@ const EditExhibit = () => {
                       </span>
                     }
                   </div>
-                </div>
+                </div> */}
               </div>
 
               {/* <div className="mb-5.5">
@@ -248,8 +307,9 @@ const EditExhibit = () => {
                 <button
                   className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                   type="submit"
+                  onClick={EditExhibit}
                 >
-                  Save
+                  {loading ? "Saving..." : "Save"}
                 </button>
               </div>
             </div>

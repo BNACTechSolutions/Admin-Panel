@@ -4,7 +4,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { useEffect, useState } from "react";
 import api from "@/api";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify"; // Import toast function
+import { toast, ToastContainer } from "react-toastify"; // Import toast function
 import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 
 const AddClient = () => {
@@ -95,6 +95,17 @@ const AddClient = () => {
 
   return (
     <div className="mx-auto max-w-270">
+      <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
       <Breadcrumb pageName="Add Client" />
 
       <div className="col-span-5 xl:col-span-3">

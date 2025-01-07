@@ -2,7 +2,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { toast, Bounce } from "react-toastify";
+import { toast, Bounce, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Ensure this is imported
 import api from "@/api";
 
@@ -53,7 +53,7 @@ const AddAdmin = () => {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
-        toast.error("Authentication token is missing.", {
+        toast.error("Session expired, kindly re-login", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -108,6 +108,17 @@ const AddAdmin = () => {
 
   return (
     <div className="mx-auto max-w-270">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Breadcrumb pageName="Add Admin" />
 
       <div>

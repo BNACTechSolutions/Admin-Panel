@@ -8,7 +8,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/api";
-import { toast, Bounce } from "react-toastify";
+import { toast, Bounce, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Landing = () => {
@@ -66,60 +66,47 @@ const Landing = () => {
   }, [router]);
 
   const updateLanding = async () => {
-
-  const formData = new FormData();
-  if(landingTitle){
-    formData.append("title", landingTitle);
-  }
-  if(landingImage){
-    formData.append("displayImage", landingImage);
-  }
-  if(landingDescription){
-    formData.append("description", landingDescription);
-  }
-  
-
-    try {
-    setLoading(true);
-      const token = localStorage.getItem("authToken"); 
-    if (!token) {
-      console.error("Authentication token is missing.");
-      return;
+    const formData = new FormData();
+    if (landingTitle) {
+      formData.append("title", landingTitle);
     }
-
-      const response = await api.put("/api/landing/edit", formData, {
+    if (landingImage) {
+      formData.append("displayImage", landingImage);
+    }
+    if (landingDescription) {
+      formData.append("description", landingDescription);
+    }
+  
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        throw new Error("Authentication token is missing.");
+      }
+  
+      await api.put("/api/landing/edit", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log("toast success called");
+      toast.success("Landing updated successfully.", {
+        position: "top-right",
+        autoClose: 3000, // Ensure toast auto-closes after a certain time
+      });
   
-      toast.success("Landing updated successfully.",
-        {position: "top-right"}
-      );
-
       setLoading(false);
-      
     } catch (error: any) {
-
       setLoading(false);
-      toast.error("An error occurred during landing upload. Please try again.", 
-                {position: "top-right"}
-              );
-      if (error.response) {
-        // Server responded with a status code outside the range of 2xx
-        console.error("Landing upload failed:", error.response.data);
-      } else if (error.request) {
-        // Request was made but no response received
-        console.error("No response received:", error.request);
-      } else {
-        // Other errors
-        console.error("An error occurred during landing upload:", error.message);
-      }
+      toast.error(
+        error.response?.data?.message || "An error occurred during the update.",
+        { position: "top-right" }
+      );
+      console.error("Error updating landing:", error);
     }
-  
   };
-
+  
   const uploadLanding = async () => {
     if (!landingImage) {
       console.error("No image selected for upload.");
@@ -144,7 +131,8 @@ const Landing = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+      
+      
       toast.success("Landing uploaded successfully.",
         {position: "top-right"}
       );
@@ -154,7 +142,7 @@ const Landing = () => {
     } catch (error: any) {
 
       setLoading(false);
-      toast.error("An error occurred during landing upload. Please try again.", 
+      toast.error(error.response?.data?.message || "An error occurred during landing upload. Please try again.", 
                 {position: "top-right"}
               );
       if (error.response) {
@@ -174,6 +162,17 @@ const Landing = () => {
 
   return (
     <div className="mx-auto max-w-270">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Breadcrumb pageName={isEditLanding? "Edit Landing": "Landing Upload"} />
 
       <div className="">
