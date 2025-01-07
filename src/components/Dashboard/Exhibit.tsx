@@ -89,6 +89,9 @@ const ExhibitUpload = () => {
       });
       setLoading(false);
     } catch (error: any) {
+      toast.error(`Exhibit Upload failed ${error}`, {
+        position: "top-right",
+      });
       if (error.response) {
         toast.error("Exhibit upload failed.", {
           position: "top-right",
