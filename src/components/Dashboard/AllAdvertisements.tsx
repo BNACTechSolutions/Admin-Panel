@@ -1,21 +1,21 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import TableThree from "../Tables/TableThree_Admin";
+import TableAllAds from "../Tables/TableAllAds";
 
-const allActivityLogs = () => {
+const AllExhibit = () => {
   return (
     <div className="mx-auto max-w-270">
-      <Breadcrumb pageName="Activity Log" />
+      <Breadcrumb pageName="All Advertisements" />
 
       <div className="">
         <div className="col-span-5 xl:col-span-3">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Log Table
+                Advertisements Available
               </h3>
             </div>
             <div className=" overflow-y-auto">
-              <TableThree />
+              <TableAllAds />
             </div>
           </div>
         </div>
@@ -24,4 +24,4 @@ const allActivityLogs = () => {
   );
 };
 
-export default allActivityLogs;
+export default AllExhibit;

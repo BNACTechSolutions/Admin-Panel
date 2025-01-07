@@ -1,14 +1,14 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout_Admin";
-import ActivityLog from "@/components/Dashboard/ActivityLog";
+import AddAds from "@/components/Dashboard/AddAds";
 
-const AdminActivityLog = () => {
+const AddAdsUser = () => {
   return (
     <>
       <DefaultLayout>
-        <ActivityLog/>
+        <AddAds/>
       </DefaultLayout>
     </>
   );
 }
 
-export default AdminActivityLog;
+export default AddAdsUser;

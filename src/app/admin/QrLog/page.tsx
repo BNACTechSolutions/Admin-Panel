@@ -1,14 +1,14 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout_Admin";
-import ActivityLog from "@/components/Dashboard/ActivityLog";
+import AdminQrLogs from "@/components/Dashboard/AdminQrDisplay";
 
-const AdminActivityLog = () => {
+const AdminSideQr = () => {
   return (
     <>
       <DefaultLayout>
-        <ActivityLog/>
+        <AdminQrLogs/>
       </DefaultLayout>
     </>
   );
 }
 
-export default AdminActivityLog;
+export default AdminSideQr;
