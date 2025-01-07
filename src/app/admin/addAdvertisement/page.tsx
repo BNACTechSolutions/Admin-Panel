@@ -1,14 +1,14 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout_Admin";
-import AddAds from "@/components/Dashboard/AddAds";
+import AddAdvertisements from "@/components/Dashboard/AddAdvertisements";
 
-const AddAdsUser = () => {
+const AddAds = () => {
   return (
     <>
       <DefaultLayout>
-        <AddAds/>
+        <AddAdvertisements/>
       </DefaultLayout>
     </>
   );
 }
 
-export default AddAdsUser;
+export default AddAds;
