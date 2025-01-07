@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const customAxios = axios.create({
-  baseURL: "https://ai-exhibit-display.onrender.com/",
+  baseURL: "https://server.aismartexhibits.com/",
 });
 
 export default customAxios;
