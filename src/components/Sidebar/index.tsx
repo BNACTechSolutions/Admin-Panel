@@ -97,10 +97,11 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Logs Section",
+        label: "Details",
         route: "#",
         children: [
-          { label: "QR Scans", route: "/QrLog" },
+          { label: "Exhibit Logs", route: "/ExhibitLogs" },
+          { label: "Visitors", route: "/client/VisitorDetails" },
         ],
       },
     ],

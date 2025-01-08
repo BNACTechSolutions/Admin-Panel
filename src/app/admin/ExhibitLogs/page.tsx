@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout_Admin";
-import AdminQrLogs from "@/components/Dashboard/AdminQrDisplay";
+import AdminQrLogs from "@/components/Dashboard/AdminSideExhibitLogs";
 
-const AdminSideQr = () => {
+const AdminSideExhibit = () => {
   return (
     <>
       <DefaultLayout>
@@ -11,4 +11,4 @@ const AdminSideQr = () => {
   );
 }
 
-export default AdminSideQr;
+export default AdminSideExhibit;
