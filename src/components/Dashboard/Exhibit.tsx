@@ -23,6 +23,7 @@ const ExhibitUpload = () => {
   const [exhibitDescription, setExhibitDescription] = useState<string>("");
   const [images, setImages] = useState<File[]>([]); // State to store multiple images
   const [loading, setLoading] = useState<boolean>(false);
+  const [exhibitISL, setExhibitISL] = useState<File | null>(null);
 
   const router = useRouter();
   useEffect(() => {
@@ -66,6 +67,10 @@ const ExhibitUpload = () => {
       toast.error("No image selected", { position: "top-right" });
     }
     formData.append("description", exhibitDescription);
+    
+    if (exhibitISL) {
+      formData.append("islVideo", exhibitISL);
+    }
 
     images.forEach((image) => {
       formData.append("images", image);
@@ -211,6 +216,25 @@ const ExhibitUpload = () => {
                   />
                 </div>
               </div>
+
+              <div className="mb-5.5">
+                  <label
+                    className="mb-3 block text-sm font-medium text-black dark:text-white"
+                    htmlFor="videoUpload"
+                  >
+                    Upload ISL
+                  </label>
+                  <input
+                    type="file"
+                    accept="video/*"
+                    onChange={ (e) => {
+                      if(e.target.files && e.target.files.length > 0){
+                        setExhibitISL(e.target.files[0]);
+                      }
+                    }}
+                    className="w-full"
+                  />
+                </div>
 
               {/* Multi-image upload button */}
               <div className="mb-5.5">

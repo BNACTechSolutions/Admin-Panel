@@ -42,20 +42,23 @@ const EditExhibit = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [translations, setTranslations] = useState<TranslationProps[]>([]);
+  const [exhibitISL, setExhibitISL] = useState<File | null>(null);
 
   const constructTranslationsJSON = (translations: TranslationProps[]) => {
     const updatedTranslations = translations.reduce(
       (acc: TranslationJSON, translation) => {
-        acc[translation.language] = {
-          title: translation.title || "",
-          description: translation.description || "",
-        };
-        return acc;
+        if (translation.language !== "english") {
+          acc[translation.language] = {
+            title: translation.title || "",
+            description: translation.description || "",
+          };
+        }
+        return acc; // Explicitly return the accumulator here
       },
-      {},
+      {}, // Initial value of the accumulator
     );
 
-    return updatedTranslations;
+    return updatedTranslations; // Return the final result
   };
 
   useEffect(() => {
@@ -97,7 +100,7 @@ const EditExhibit = () => {
       const response = await api.put(`/api/exhibit/${code}`, rawBody, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
         },
       });
 
@@ -161,7 +164,7 @@ const EditExhibit = () => {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          placeholder="Devid Jhon"
+                          placeholder="Exhibit title  "
                           value={translation.title}
                           onChange={(e) =>
                             setTranslations(
@@ -296,6 +299,25 @@ const EditExhibit = () => {
               </div> */}
                 </div>
               ))}
+
+              <div className="mb-5.5">
+                <label
+                  className="mb-3 block text-sm font-medium text-black dark:text-white"
+                  htmlFor="videoUpload"
+                >
+                  Update ISL
+                </label>
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      setExhibitISL(e.target.files[0]);
+                    }
+                  }}
+                  className="w-full"
+                />
+              </div>
 
               {/* <div className="mb-5.5">
                     <label
