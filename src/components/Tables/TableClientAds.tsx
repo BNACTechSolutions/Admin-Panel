@@ -13,7 +13,7 @@ interface ClientAdProps {
   clientId: string;
   clientName: string;
   hasAdvertisement: string;
-  advertisement: string;
+  advertisement: string | null;
 }
 
 interface AdvertisementProps {
@@ -126,12 +126,12 @@ const AllClientsAdvertisements = () => {
     const updatedClientAd = filteredAds[index];
     const selectedAd = advertisements.find((ad) => ad.adName === updatedClientAd.advertisement);
     const client = clients.find((c) => c.clientId.name === updatedClientAd.clientName);
-  
+
     if (!client) {
       toast.error("Client not found");
       return;
     }
-  
+
     try {
       const payload =
         updatedClientAd.hasAdvertisement === "No"
@@ -143,17 +143,17 @@ const AllClientsAdvertisements = () => {
               clientId: client.clientId._id,
               advertisementId: selectedAd?._id || null,
             };
-  
+
       const response = await api.post("/api/admin/allocate-ad", payload, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       });
-  
+
       if (response.status !== 200) {
         throw new Error("Failed to save advertisement");
       }
-  
+
       toast.success("Advertisement updated successfully");
       setEditMode(null);
     } catch (error) {
@@ -164,7 +164,7 @@ const AllClientsAdvertisements = () => {
 
   const handleAdChange = (index: number, selectedOption: any) => {
     const updatedAds = [...filteredAds];
-    updatedAds[index].advertisement = selectedOption ? selectedOption.value : "";
+    updatedAds[index].advertisement = selectedOption ? selectedOption.value : null;
     setFilteredAds(updatedAds);
   };
 
@@ -172,7 +172,7 @@ const AllClientsAdvertisements = () => {
     const updatedAds = [...filteredAds];
     updatedAds[index].hasAdvertisement = value;
     if (value === "No") {
-      updatedAds[index].advertisement = "";
+      updatedAds[index].advertisement = null;
     }
     setFilteredAds(updatedAds);
   };

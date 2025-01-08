@@ -115,7 +115,8 @@ const menuGroups = [
         route: "#",
         children: [
           { label: "Activity Logs", route: "/auth/admin/ActivityLog" },
-          { label: "QR Logs", route: "/admin/QrLog" },
+          { label: "User Logs", route: "/admin/ExhibitLogs" },
+          { label: "Visitor Details", route: "/admin/VisitorDetails" },
         ],
       },
       {

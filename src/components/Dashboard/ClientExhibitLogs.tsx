@@ -1,21 +1,21 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import TableQrAdmin from "../Tables/TableQrAdmin";
+import TableExhibitlogs from "../Tables/TableExhibitClientLogs";
 
-const AdminQrLogs = () => {
+const ClientLogs = () => {
   return (
     <div className="mx-auto max-w-270">
-      <Breadcrumb pageName="QR Scan Logs" />
+      <Breadcrumb pageName="Exhibit Visit Logs" />
 
       <div className="">
         <div className="col-span-5 xl:col-span-3">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                QR Scan Logs
+                Exhibit Logs
               </h3>
             </div>
             <div className=" overflow-y-auto">
-              <TableQrAdmin />
+              <TableExhibitlogs />
             </div>
           </div>
         </div>
@@ -24,4 +24,4 @@ const AdminQrLogs = () => {
   );
 };
 
-export default AdminQrLogs;
+export default ClientLogs;
