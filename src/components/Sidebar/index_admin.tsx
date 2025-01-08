@@ -140,9 +140,9 @@ const menuGroups = [
         label: "Advertisement ",
         route: "#",
         children: [
-          { label: "Add Advertiser", route: "/admin/addAdvertisementUser" },
-          { label: "Add Advertisement", route: "/admin/addAdvertisement" },
-          { label: "Link Advertisement", route: "/admin/linkclientads" },
+          { label: "All Advertisers", route: "/admin/Advertisers" },
+          { label: "All Advertisements", route: "/admin/AllAds" },
+          { label: "Client & Advertisement", route: "/admin/linkclientads" },
         ],
       }      
     ],

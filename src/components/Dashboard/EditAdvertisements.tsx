@@ -5,11 +5,20 @@ import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "@/api";
 
-const AddAdvertisement = ({ onClose }: { onClose: () => void }) => {
-  const [adName, setAdName] = useState<string>("");
+const EditAdvertisement = ({
+  advertisement,
+  onClose,
+  onUpdate, // Added the onUpdate prop here
+}: {
+  advertisement: any;
+  onClose: () => void;
+  onUpdate: (updatedAd: any) => void; // This prop will be used to update the parent state
+}) => {
+  const [adName, setAdName] = useState<string>(advertisement.adName);
   const [adImage, setAdImage] = useState<File | null>(null);
-  const [advertiserId, setAdvertiserId] = useState<string>("");
+  const [advertiserId, setAdvertiserId] = useState<string>(advertisement.advertiserId._id);
   const [advertisers, setAdvertisers] = useState<any[]>([]);
+  const [imagePreview, setImagePreview] = useState<string>(advertisement.adImage || "");
   const [errors, setErrors] = useState<any>({});
 
   // Fetch advertisers on component load
@@ -45,14 +54,20 @@ const AddAdvertisement = ({ onClose }: { onClose: () => void }) => {
   const validateInputs = () => {
     const errors: any = {};
     if (!adName.trim()) errors.adName = "Advertisement name is required.";
-    if (!adImage) errors.adImage = "Advertisement image is required.";
     if (!advertiserId) errors.advertiserId = "Please select an advertiser.";
     return errors;
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setAdImage(file);
+    if (file) {
+      setAdImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async () => {
@@ -64,8 +79,12 @@ const AddAdvertisement = ({ onClose }: { onClose: () => void }) => {
 
     const formData = new FormData();
     formData.append("adName", adName);
-    formData.append("adImage", adImage as Blob);
     formData.append("advertiserId", advertiserId);
+
+    // Only append the new image if it has been changed
+    if (adImage) {
+      formData.append("adImage", adImage as Blob);
+    }
 
     try {
       const token = localStorage.getItem("authToken");
@@ -78,24 +97,27 @@ const AddAdvertisement = ({ onClose }: { onClose: () => void }) => {
         return;
       }
 
-      await api.post("/api/admin/add-advertisement", formData, {
+      const response = await api.put(`/api/admin/advertisements/${advertisement._id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
 
-      toast.success("Advertisement added successfully!", {
-        position: "top-right",
-        autoClose: 5000,
-        transition: Bounce,
-      });
+      if (response.status === 200) {
+        toast.success("Advertisement updated successfully!", {
+          position: "top-right",
+          autoClose: 5000,
+          transition: Bounce,
+        });
 
-      resetForm();
-      onClose();  // Close the modal after successful submission
+        // Close the modal or redirect if needed
+        onUpdate(response.data.updatedAdvertisement); // Call onUpdate with the updated ad
+        onClose(); // Close the modal
+      }
     } catch (error: any) {
       const errorMessage =
-        error.response?.data?.message || "Failed to add advertisement.";
+        error.response?.data?.message || "Failed to update advertisement.";
       toast.error(errorMessage, {
         position: "top-right",
         autoClose: 5000,
@@ -104,16 +126,8 @@ const AddAdvertisement = ({ onClose }: { onClose: () => void }) => {
     }
   };
 
-  const resetForm = () => {
-    setAdName("");
-    setAdImage(null);
-    setAdvertiserId("");
-    setErrors({});
-  };
-
   const handleCancel = () => {
-    resetForm();
-    onClose();  // Close the modal when cancel button is clicked
+    onClose(); // Calls onClose here as well
   };
 
   return (
@@ -127,7 +141,7 @@ const AddAdvertisement = ({ onClose }: { onClose: () => void }) => {
         transition={Bounce}
       />
       <div className="rounded-sm border bg-white shadow-default p-7">
-        <h3 className="font-medium text-black mb-4">Add Advertisement</h3>
+        <h3 className="font-medium text-black mb-4">Edit Advertisement</h3>
 
         <div className="mb-5">
           <label className="block text-sm font-medium mb-2" htmlFor="adName">
@@ -166,16 +180,26 @@ const AddAdvertisement = ({ onClose }: { onClose: () => void }) => {
         </div>
 
         <div className="mb-5">
-          <label className="block text-sm font-medium mb-2">Upload Image</label>
+          <label className="block text-sm font-medium mb-2">Current Image</label>
+          <div className="mb-3">
+            {imagePreview ? (
+              <img
+                src={imagePreview}
+                alt="Advertisement"
+                className="w-24 h-24 object-cover rounded"
+              />
+            ) : (
+              <div>No image available</div>
+            )}
+          </div>
+
+          <label className="block text-sm font-medium mb-2">Upload New Image</label>
           <input
             type="file"
             accept="image/*"
             onChange={handleImageChange}
             className="w-full"
           />
-          {errors.adImage && (
-            <div className="text-red-500 text-sm">{errors.adImage}</div>
-          )}
         </div>
 
         <div className="flex gap-4">
@@ -183,7 +207,7 @@ const AddAdvertisement = ({ onClose }: { onClose: () => void }) => {
             onClick={handleSubmit}
             className="flex-1 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark"
           >
-            Add Advertisement
+            Update Advertisement
           </button>
           <button
             onClick={handleCancel} // Now calls onClose here as well
@@ -197,4 +221,4 @@ const AddAdvertisement = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-export default AddAdvertisement;
+export default EditAdvertisement;

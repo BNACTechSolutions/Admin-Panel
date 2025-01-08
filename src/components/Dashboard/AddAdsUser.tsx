@@ -5,7 +5,11 @@ import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "@/api"; // Replace with your API instance
 
-const AddAdvertiser = () => {
+interface AddAdsUserProps {
+  onClose?: () => void;
+}
+
+const AddAdvertiser: React.FC<AddAdsUserProps> = ({ onClose }) => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [mobile, setMobile] = useState<string>("");
@@ -58,6 +62,7 @@ const AddAdvertiser = () => {
       });
 
       resetForm();
+      if (onClose) onClose(); // Close the modal after successful submission
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || "Failed to add advertiser.";
@@ -74,6 +79,7 @@ const AddAdvertiser = () => {
     setEmail("");
     setMobile("");
     setErrors({});
+    if (onClose) onClose(); // Trigger the modal close on reset
   };
 
   return (
@@ -88,6 +94,7 @@ const AddAdvertiser = () => {
       />
       <div className="rounded-sm border bg-white shadow-default p-7">
         <h3 className="font-medium text-black mb-4">Add Advertiser</h3>
+        {/* Form fields */}
         <div className="mb-5">
           <label className="block text-sm font-medium mb-2" htmlFor="name">
             Name
@@ -104,7 +111,6 @@ const AddAdvertiser = () => {
             <div className="text-red-500 text-sm">{errors.name}</div>
           )}
         </div>
-
         <div className="mb-5">
           <label className="block text-sm font-medium mb-2" htmlFor="email">
             Email
@@ -121,7 +127,6 @@ const AddAdvertiser = () => {
             <div className="text-red-500 text-sm">{errors.email}</div>
           )}
         </div>
-
         <div className="mb-5">
           <label className="block text-sm font-medium mb-2" htmlFor="mobile">
             Mobile Number
@@ -139,6 +144,7 @@ const AddAdvertiser = () => {
           )}
         </div>
 
+        {/* Buttons */}
         <div className="flex gap-4">
           <button
             onClick={handleSubmit}
