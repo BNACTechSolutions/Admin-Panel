@@ -38,12 +38,11 @@ const Landing = () => {
   const constructTranslationsJSON = (translations: TranslationProps[]) => {
     const updatedTranslations = translations.reduce(
       (acc: TranslationJSON, translation) => {
-        if (translation.language !== "english") {
           acc[translation.language] = {
             title: translation.title || "",
             description: translation.description || "",
           };
-        }
+        
         return acc; // Explicitly return the accumulator here
       },
       {}, // Initial value of the accumulator
@@ -104,12 +103,12 @@ const Landing = () => {
 
   const updateLanding = async () => {
     const updatedTranslationsJSON = constructTranslationsJSON(translations);
-  
+
     const formData = new FormData();
-  
+
     // Append JSON data
     formData.append("translations", JSON.stringify(updatedTranslationsJSON));
-  
+
     if (landingTitle) {
       formData.append("title", landingTitle);
     }
@@ -119,32 +118,32 @@ const Landing = () => {
     if (landingDescription) {
       formData.append("description", landingDescription);
     }
-  
+
     // Append the video file
     if (landingISL) {
       formData.append("islVideo", landingISL);
     }
-  
+
     try {
       setLoading(true);
       const token = localStorage.getItem("authToken");
       if (!token) {
         throw new Error("Authentication token is missing.");
       }
-  
+
       await api.put("/api/landing/edit", formData, {
         headers: {
           "Content-Type": "multipart/form-data", // Ensure proper content type
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       console.log("toast success called");
       toast.success("Landing updated successfully.", {
         position: "top-right",
         autoClose: 3000, // Ensure toast auto-closes after a certain time
       });
-  
+
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
@@ -155,18 +154,16 @@ const Landing = () => {
       console.error("Error updating landing:", error);
     }
   };
-  
 
   const uploadLanding = async () => {
     if (!landingImage) {
       console.error("No image selected for upload.");
       return;
     }
-    if(!landingISL) {
-      toast.error("Please upload ISL video", {  
+    if (!landingISL) {
+      toast.error("Please upload ISL video", {
         position: "top-right",
-      }
-      )
+      });
     }
     const formData = new FormData();
     formData.append("title", landingTitle);
@@ -437,7 +434,7 @@ const Landing = () => {
                   <input
                     type="file"
                     accept="video/*"
-                    onChange={ (e) => {
+                    onChange={(e) => {
                       if (e.target.files && e.target.files.length > 0) {
                         setLandingISL(e.target.files[0]);
                       }
@@ -456,8 +453,8 @@ const Landing = () => {
                   <input
                     type="file"
                     accept="video/*"
-                    onChange={ (e) => {
-                      if(e.target.files && e.target.files.length > 0){
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
                         setLandingISL(e.target.files[0]);
                       }
                     }}
@@ -517,7 +514,7 @@ const Landing = () => {
                   </div> */}
 
               <div className="flex justify-end gap-4.5 dark:text-white">
-                <button
+                {/* <button
                   className="flex w-1/2 justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                   type="submit"
                 >
@@ -525,7 +522,7 @@ const Landing = () => {
                     <Icon icon="mingcute:ai-fill" />
                   </span>
                   Generate Text Description
-                </button>
+                </button> */}
 
                 <button
                   className="flex h-3/4 w-1/2 justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90 md:h-full"

@@ -47,12 +47,12 @@ const EditExhibit = () => {
   const constructTranslationsJSON = (translations: TranslationProps[]) => {
     const updatedTranslations = translations.reduce(
       (acc: TranslationJSON, translation) => {
-        if (translation.language !== "english") {
+         
           acc[translation.language] = {
             title: translation.title || "",
             description: translation.description || "",
           };
-        }
+        
         return acc; // Explicitly return the accumulator here
       },
       {}, // Initial value of the accumulator
@@ -88,29 +88,48 @@ const EditExhibit = () => {
   const EditExhibit = async () => {
     try {
       setLoading(true);
-
+  
+      // Create a new FormData instance
+      const formData = new FormData();
+      
+      // Append basic fields
+      if(title){
+        formData.append('title', title || '');
+      }
+      
+      if(description){
+        formData.append('description', description || '');
+      }
+      
+      
+      // Convert translations to JSON string and append
       const updatedTranslationsJSON = constructTranslationsJSON(translations);
-      const rawBody = {
-        title: title || "",
-        description: description || "",
-        translations: updatedTranslationsJSON,
-        ...(exhibitImage && { titleImage: exhibitImage }),
-      };
+      formData.append('translations', JSON.stringify(updatedTranslationsJSON));
+      
+      // Append image if it exists
+      if (exhibitImage) {
+        formData.append('titleImage', exhibitImage);
+      }
 
-      const response = await api.put(`/api/exhibit/${code}`, rawBody, {
+      // Append ISL if it exists
+      if (exhibitISL) {
+        formData.append('islVideo', exhibitISL);
+      }
+  
+      const response = await api.put(`/api/exhibit/${code}`, formData, {
         headers: {
-          "Content-Type": "application/json",
+          // Remove Content-Type - browser will set it automatically with boundary
           "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
         },
       });
-
+  
       if (response.status !== 200) {
         toast.error("Failed to update exhibit", {
           position: "top-right",
         });
         throw new Error("Failed to update exhibit");
       }
-
+  
       setLoading(false);
       toast.success("Exhibit updated successfully", {
         position: "top-right",
@@ -370,15 +389,13 @@ const EditExhibit = () => {
                   </div> */}
 
               <div className="flex justify-end gap-4.5 dark:text-white">
-                <button
+                {/* <button
                   className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                   type="submit"
                 >
-                  <span className="pr-5">
-                    <Icon icon="mingcute:ai-fill" />
-                  </span>
-                  Generate Text Description
-                </button>
+                  
+                  Update ISL
+                </button> */}
 
                 <button
                   className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
