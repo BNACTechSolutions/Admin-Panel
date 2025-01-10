@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const customAxios = axios.create({
-  baseURL: "https://server.aismartexhibits.com/",
+  baseURL: "http://localhost:8000/",
 });
 
 export default customAxios;
