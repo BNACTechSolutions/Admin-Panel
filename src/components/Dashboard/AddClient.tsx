@@ -14,8 +14,6 @@ const AddClient = () => {
     email: "",
     mobile: "",
     status: 1,
-    allottedUsers: 0,
-    displayAllotted: 0,
     textSize: 2,
     validityDays: 365,
     audio: true,
@@ -168,32 +166,6 @@ const AddClient = () => {
                 <option value={1}>Active</option>
                 <option value={0}>Inactive</option>
               </select>
-            </div>
-
-            <div className="mb-5.5">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Allotted Users
-              </label>
-              <input
-                className="w-full rounded border border-stroke bg-gray py-3 pl-5 pr-4.5 text-black dark:border-strokedark dark:bg-meta-4 dark:text-white"
-                type="number"
-                name="allottedUsers"
-                value={clientData.allottedUsers}
-                onChange={handleInputChange}
-              />
-            </div>
-
-            <div className="mb-5.5">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Display Allotted
-              </label>
-              <input
-                className="w-full rounded border border-stroke bg-gray py-3 pl-5 pr-4.5 text-black dark:border-strokedark dark:bg-meta-4 dark:text-white"
-                type="number"
-                name="displayAllotted"
-                value={clientData.displayAllotted}
-                onChange={handleInputChange}
-              />
             </div>
 
             <div className="mb-5.5">
