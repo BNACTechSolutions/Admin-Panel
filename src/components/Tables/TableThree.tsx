@@ -4,6 +4,8 @@ import { ExhibitItemProps } from "@/types/exhibits"; // assuming your type is de
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useRouter } from "next/navigation";
 import api from "@/api";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const TableThree = () => {
   const [exhibits, setExhibits] = useState<ExhibitItemProps[]>([]);
@@ -20,12 +22,19 @@ const TableThree = () => {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`,
           },
         });
+        console.log(response);
+        
         if (response.status !== 200) {
           throw new Error('Failed to fetch exhibits');
         }
         const data = response.data;
         setExhibits(data.exhibits || []); // Assuming the data structure is { exhibits: [...data] }
-      } catch (error) {
+      } catch (error: any) {
+        if(error.response.status === 403){
+          toast.error("error: ", error.response.status );
+          // toast.error(error.response.statusText);
+          router.push("/auth/signin");
+        }
         console.error("Error fetching exhibits:", error);
       }
     };
@@ -69,6 +78,7 @@ const TableThree = () => {
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <ToastContainer position="top-right" />
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
