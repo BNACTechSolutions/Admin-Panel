@@ -60,6 +60,7 @@ const SignIn: React.FC = () => {
         localStorage.setItem("authToken", token);
         localStorage.setItem("userType", user.userType);
         localStorage.setItem("qrURL", user.qrURL);
+        localStorage.setItem("clientCode", user.code);
 
         console.log("Authentication token and user type stored successfully.");
 
