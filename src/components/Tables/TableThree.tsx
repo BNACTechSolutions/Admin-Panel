@@ -22,7 +22,6 @@ const TableThree = () => {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`,
           },
         });
-        console.log(response);
         
         if (response.status !== 200) {
           throw new Error('Failed to fetch exhibits');
@@ -65,7 +64,6 @@ const TableThree = () => {
         throw new Error('Failed to delete exhibit');
       }
       const data = response.data;
-      console.log(data);
       // Update exhibits state after deletion
       setExhibits(exhibits.filter((exhibit) => exhibit.code !== selectedExhibit));
     } catch (error) {

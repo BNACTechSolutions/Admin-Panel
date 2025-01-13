@@ -471,7 +471,7 @@ const Landing = () => {
                 <div className="mb-4">
                   <label className="mb-3 block justify-center text-sm font-medium text-black dark:text-white">
                     Title ({translation.language})
-                    {translation?.audioUrls.title && (
+                    {translation?.audioUrls?.title && (
                       <button
                         className="rounded-full p-2 transition-colors hover:bg-amber-50"
                         onClick={() => {
@@ -500,7 +500,7 @@ const Landing = () => {
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Description ({translation.language})
-                    {translation?.audioUrls.description && (
+                    {translation?.audioUrls?.description && (
                       <button
                         className="rounded-full p-2 transition-colors hover:bg-amber-50"
                         onClick={() => {

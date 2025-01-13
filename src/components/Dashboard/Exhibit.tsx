@@ -28,7 +28,6 @@ const ExhibitUpload = () => {
   const router = useRouter();
   useEffect(() => {
     const userType = localStorage.getItem("userType");
-    console.log("User Type:", userType);
     if (userType !== "0") {
       // Redirect to /auth/signin if userType is invalid
       router.push("/auth/signin");

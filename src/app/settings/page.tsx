@@ -14,11 +14,8 @@ const Settings = () => {
   // Adjust the import path to your API utility
 
   const handlePasswordChange = async () => {
-    console.log("Password change request");
     const userData = localStorage.getItem("userData");
-    console.log(userData);
     const email = userData ? JSON.parse(userData).email : null;
-    console.log(email);
 
     if (!email) {
       toast.error("User not logged in!");

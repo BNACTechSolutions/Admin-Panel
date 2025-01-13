@@ -14,11 +14,11 @@ const AddClient = () => {
     email: "",
     mobile: "",
     status: 1,
+    maximumDisplays: 10,
     textSize: 2,
     validityDays: 365,
     audio: true,
     isl: false,
-    video: false,
     languages: ["english"],
   });
 
@@ -186,6 +186,19 @@ const AddClient = () => {
 
             <div className="mb-5.5">
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                Maximum Exhibit Alloted
+              </label>
+              <input
+                className="w-full rounded border border-stroke bg-gray py-3 pl-5 pr-4.5 text-black dark:border-strokedark dark:bg-meta-4 dark:text-white"
+                type="number"
+                name="validityDays"
+                value={clientData.maximumDisplays}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div className="mb-5.5">
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Validity Days
               </label>
               <input
@@ -219,15 +232,6 @@ const AddClient = () => {
                     onChange={handleInputChange}
                   />
                   ISL
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="video"
-                    checked={clientData.video}
-                    onChange={handleInputChange}
-                  />
-                  Video
                 </label>
               </div>
             </div>

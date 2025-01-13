@@ -5,11 +5,9 @@ const login = async (email: string, password: string): Promise<boolean> => {
   try {
     const response = await api.post("/api/client/login", { email, password });
     if (response.status === 200) {
-      console.log("Login successful:", response.data);
       // redirect('/'); // Redirecting to the root page
       return true; // Indicating success
     } else {
-      console.log("Login failed:", response.data);
       return false; // Indicating failure
     }
   } catch (error) {

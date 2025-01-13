@@ -10,8 +10,6 @@ export default function PostPage() {
 
   const pathname = usePathname();
 
-  console.log(route);
-
   return (
     <DefaultLayout>
       <EditExhibit/>

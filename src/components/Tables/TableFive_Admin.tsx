@@ -20,7 +20,7 @@ const AdminTable = () => {
   const [filteredAdmins, setFilteredAdmins] = useState<Admin[]>([]);
   const [currentUserType, setCurrentUserType] = useState<number | null>(null);
   const [editingAdminId, setEditingAdminId] = useState<string | null>(null);
-  const [newStatus, setNewStatus] = useState<number>(1); // Default: Active
+  const [editedAdmin, setEditedAdmin] = useState<Admin | null>(null);
 
   // Filters
   const [filterName, setFilterName] = useState<string>("");
@@ -67,12 +67,29 @@ const AdminTable = () => {
     decodeUserType();
   }, []);
 
-  const editAdmin = async (id: string) => {
-    if (currentUserType === 0) {
+  const handleEditClick = (admin: Admin) => {
+    setEditingAdminId(admin._id);
+    setEditedAdmin({ ...admin });
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    field: string
+  ) => {
+    if (editedAdmin) {
+      setEditedAdmin({
+        ...editedAdmin,
+        [field]: e.target.value,
+      });
+    }
+  };  
+
+  const handleSave = async () => {
+    if (editedAdmin) {
       try {
         const response = await api.put(
-          `api/admin/${id}`,
-          { status: newStatus }, // Sending status data
+          `api/admin/${editedAdmin._id}`,
+          { ...editedAdmin },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -81,28 +98,32 @@ const AdminTable = () => {
         );
 
         if (response.status === 200) {
-          alert("Admin status updated successfully!");
+          alert("Admin details updated successfully!");
           setAdmins((prev) =>
             prev.map((admin) =>
-              admin._id === id ? { ...admin, status: newStatus } : admin
+              admin._id === editedAdmin._id ? { ...editedAdmin } : admin
             )
           );
           setFilteredAdmins((prev) =>
             prev.map((admin) =>
-              admin._id === id ? { ...admin, status: newStatus } : admin
+              admin._id === editedAdmin._id ? { ...editedAdmin } : admin
             )
           );
           setEditingAdminId(null); // Reset editing state
+          setEditedAdmin(null); // Clear the edited admin
         } else {
-          throw new Error("Failed to update admin status.");
+          throw new Error("Failed to update admin details.");
         }
       } catch (error) {
-        console.error("Error updating admin status:", error);
-        alert("Error updating admin status.");
+        console.error("Error updating admin details:", error);
+        alert("Error updating admin details.");
       }
-    } else {
-      alert("You do not have permission to edit admin details.");
     }
+  };
+
+  const handleCancel = () => {
+    setEditingAdminId(null);
+    setEditedAdmin(null);
   };
 
   const applyFilter = () => {
@@ -206,38 +227,68 @@ const AdminTable = () => {
             {filteredAdmins.map((admin) => (
               <tr key={admin._id}>
                 <td className="border-b border-[#eee] px-4 py-5 text-black dark:text-white">
-                  {admin.name}
+                  {editingAdminId === admin._id ? (
+                    <input
+                      type="text"
+                      value={editedAdmin?.name}
+                      onChange={(e) => handleChange(e, "name")}
+                      className="border border-gray-300 p-1 rounded-md"
+                    />
+                  ) : (
+                    admin.name
+                  )}
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 text-black dark:text-white">
-                  {admin.email}
+                  {editingAdminId === admin._id ? (
+                    <input
+                      type="email"
+                      value={editedAdmin?.email}
+                      onChange={(e) => handleChange(e, "email")}
+                      className="border border-gray-300 p-1 rounded-md"
+                    />
+                  ) : (
+                    admin.email
+                  )}
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 text-black dark:text-white">
-                  {admin.mobile}
+                  {editingAdminId === admin._id ? (
+                    <input
+                      type="text"
+                      value={editedAdmin?.mobile}
+                      onChange={(e) => handleChange(e, "mobile")}
+                      className="border border-gray-300 p-1 rounded-md"
+                    />
+                  ) : (
+                    admin.mobile
+                  )}
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 text-black dark:text-white">
-                  {admin.status === 1 ? "Active" : "Inactive"}
+                  {editingAdminId === admin._id ? (
+                    <select
+                      value={editedAdmin?.status}
+                      onChange={(e) => handleChange(e, "status")}
+                      className="border border-gray-300 p-1 rounded-md"
+                    >
+                      <option value={1}>Active</option>
+                      <option value={0}>Inactive</option>
+                    </select>
+                  ) : (
+                    admin.status === 1 ? "Active" : "Inactive"
+                  )}
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 text-black dark:text-white">
                   <div className="flex items-center space-x-3.5">
                     {editingAdminId === admin._id ? (
                       <div className="flex items-center">
-                        <select
-                          value={newStatus}
-                          onChange={(e) => setNewStatus(Number(e.target.value))}
-                          className="border border-gray-300 p-1 rounded-md"
-                        >
-                          <option value={1}>Active</option>
-                          <option value={0}>Inactive</option>
-                        </select>
                         <button
                           className="ml-2 text-green-500 hover:underline"
-                          onClick={() => editAdmin(admin._id)}
+                          onClick={handleSave}
                         >
                           Save
                         </button>
                         <button
                           className="ml-2 text-red-500 hover:underline"
-                          onClick={() => setEditingAdminId(null)}
+                          onClick={handleCancel}
                         >
                           Cancel
                         </button>
@@ -245,7 +296,7 @@ const AdminTable = () => {
                     ) : (
                       <button
                         className="text-blue-500 hover:underline"
-                        onClick={() => setEditingAdminId(admin._id)}
+                        onClick={() => handleEditClick(admin)}
                         disabled={currentUserType !== 0}
                       >
                         <Icon icon="material-symbols:edit-sharp" />

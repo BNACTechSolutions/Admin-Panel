@@ -38,7 +38,7 @@ const SignIn: React.FC = () => {
       toast.error("reCAPTCHA not ready. Please try again.", { theme: "light" });
       return;
     }
-    console.log("handlesignin");
+
     try {
       const recaptchaToken = await executeRecaptcha("login");
 
@@ -49,7 +49,6 @@ const SignIn: React.FC = () => {
         recaptchaToken,
       });
 
-      console.log("Login response:", response);
       setLoading(false);
       if (response.status === 200) {
         // Extract token and user type from the response
