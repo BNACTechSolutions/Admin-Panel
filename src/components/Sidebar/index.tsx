@@ -46,9 +46,34 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Dashboard",
+        label: "Change Password",
+        route: "/auth/forgot-password",
+      },
+      {
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            className="h-6 w-6 text-yellow-500"
+          >
+            <path
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              d="M12 2L2 22h20L12 2zM12 16v2M12 10v4"
+            />
+          </svg>
+        ),
+        label: "Details",
         route: "#",
-        children: [{ label: "Home Page", route: "/" }, { label: "Landing", route: "/landing" }, {label: "Exhibit Upload", route: "/exhibit" }, {label: "All Exhibits", route: "/exhibit/all" }],
+        children: [
+          { label: "Exhibit Logs", route: "/ExhibitLogs" },
+          { label: "Visitors", route: "/client/VisitorDetails" },
+        ],
       },
     ],
   },
@@ -115,19 +140,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
-        className={`fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:translate-x-0 ${
+        className={`fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* <!-- SIDEBAR HEADER --> */}
-        <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-          <Link href="/">
+        <div className="flex items-center justify-between gap-2 px-6 py-4 lg:py-6">
+          <Link href="/" className="flex items-center">
             <Image
               width={176}
               height={32}
               src={"/images/logo/logo.png"}
               alt="Logo"
               priority
+              className="w-auto h-auto max-h-8 lg:max-h-10"
             />
           </Link>
 
