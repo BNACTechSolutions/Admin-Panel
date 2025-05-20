@@ -1,7 +1,5 @@
-import ECommerce from "@/components/Dashboard/Exhibit";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { Sign } from "crypto";
 import ExhibitUpload from "@/components/Dashboard/Exhibit";
 
 export const metadata: Metadata = {

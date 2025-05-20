@@ -200,7 +200,7 @@ const AllAdvertisers = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default sm:px-7.5 xl:pb-1">
+    <div className="rounded-sm border border-stroke dark:border-strokedark bg-white dark:bg-boxdark px-5 pb-2.5 pt-6 shadow-default sm:px-7.5 xl:pb-1">
       <div className="mb-4 flex justify-between items-center">
         <input
           type="text"
@@ -245,16 +245,14 @@ const AllAdvertisers = () => {
 
       {showAddAdvertiser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded">
-            <AddAdsUser onClose={() => setShowAddAdvertiser(false)} />
+          <div className="bg-white dark:bg-boxdark p-6 rounded">            <AddAdsUser onClose={() => setShowAddAdvertiser(false)} />
           </div>
         </div>
       )}
 
       <table className="w-full table-auto">
         <thead>
-          <tr className="bg-gray-2 text-left">
-            <th className="px-4 py-4 font-medium text-black">Serial Number</th>
+          <tr className="bg-gray-2 dark:bg-meta-4 text-left">            <th className="px-4 py-4 font-medium text-black">Serial Number</th>
             <th className="px-4 py-4 font-medium text-black">Name</th>
             <th className="px-4 py-4 font-medium text-black">Email</th>
             <th className="px-4 py-4 font-medium text-black">Mobile</th>
@@ -265,8 +263,7 @@ const AllAdvertisers = () => {
           {filteredAdvertisers.map((advertiser, index) => (
             <tr key={index}>
               <td className="px-4 py-5">{advertiser.serialNumber}</td>
-              <td className="px-4 py-5">
-                {editMode === index ? (
+              <td className="px-4 py-5 text-black dark:text-white">                {editMode === index ? (
                   <input
                     type="text"
                     value={advertiser.name}
@@ -283,8 +280,7 @@ const AllAdvertisers = () => {
                   advertiser.name
                 )}
               </td>
-              <td className="px-4 py-5">
-                {editMode === index ? (
+              <td className="px-4 py-5 text-black dark:text-white">                {editMode === index ? (
                   <input
                     type="text"
                     value={advertiser.email}
@@ -301,8 +297,7 @@ const AllAdvertisers = () => {
                   advertiser.email
                 )}
               </td>
-              <td className="px-4 py-5">
-                {editMode === index ? (
+              <td className="px-4 py-5 text-black dark:text-white">                {editMode === index ? (
                   <input
                     type="text"
                     value={advertiser.mobile}
@@ -319,8 +314,7 @@ const AllAdvertisers = () => {
                   advertiser.mobile
                 )}
               </td>
-              <td className="px-4 py-5">
-                {editMode === index ? (
+              <td className="px-4 py-5 text-black dark:text-white">                {editMode === index ? (
                   <>
                     <button
                       onClick={() => handleSave(index)}

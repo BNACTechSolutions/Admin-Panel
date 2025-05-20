@@ -147,7 +147,7 @@ const AllAdvertisements = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default sm:px-7.5 xl:pb-1">
+    <div className="rounded-sm border border-stroke dark:border-strokedark bg-white dark:bg-boxdark px-5 pb-2.5 pt-6 shadow-default sm:px-7.5 xl:pb-1">
       <div className="mb-4 flex justify-between items-center">
         <input
           type="text"
@@ -195,8 +195,7 @@ const AllAdvertisements = () => {
       {/* Add Advertisement Modal */}
       {showAddAdvertisement && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded">
-            <AddAdvertisement onClose={() => setShowAddAdvertisement(false)} />
+          <div className="bg-white dark:bg-boxdark p-6 rounded">            <AddAdvertisement onClose={() => setShowAddAdvertisement(false)} />
           </div>
         </div>
       )}
@@ -204,8 +203,7 @@ const AllAdvertisements = () => {
       {/* Edit Advertisement Modal */}
       {showEditAdvertisement && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded">
-            <EditAdvertisement
+          <div className="bg-white dark:bg-boxdark p-6 rounded">            <EditAdvertisement
               advertisement={showEditAdvertisement}
               onClose={() => setShowEditAdvertisement(null)}
               onUpdate={(updatedAd) => {
@@ -224,8 +222,7 @@ const AllAdvertisements = () => {
 
       <table className="w-full table-auto">
         <thead>
-          <tr className="bg-gray-2 text-left">
-            <th className="px-4 py-4 font-medium text-black">Serial Number</th>
+          <tr className="bg-gray-2 dark:bg-meta-4 text-left">            <th className="px-4 py-4 font-medium text-black">Serial Number</th>
             <th className="px-4 py-4 font-medium text-black">Advertisement Name</th>
             <th className="px-4 py-4 font-medium text-black">Advertiser Name</th>
             <th className="px-4 py-4 font-medium text-black">Status</th>
@@ -238,8 +235,7 @@ const AllAdvertisements = () => {
               <td className="px-4 py-5">{advertisement.serialNumber}</td>
               <td className="px-4 py-5">{advertisement.adName}</td>
               <td className="px-4 py-5">{advertisement.advertiserId.name}</td>
-              <td className="px-4 py-5">
-                <span
+              <td className="px-4 py-5 text-black dark:text-white">                <span
                   className={`px-2 py-1 rounded ${
                     advertisement.active ? "bg-green-500 text-white" : "bg-red-500 text-white"
                   }`}
@@ -247,8 +243,7 @@ const AllAdvertisements = () => {
                   {advertisement.active ? "Active" : "Inactive"}
                 </span>
               </td>
-              <td className="px-4 py-5">
-                <button
+              <td className="px-4 py-5 text-black dark:text-white">                <button
                   onClick={() => handleToggleStatus(advertisement._id, advertisement.active)}
                   className={`px-3 py-1 rounded ${
                     advertisement.active ? "bg-red-500" : "bg-green-500"

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, ReactNode } from "react";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumbs_client";
 import FileDropZone from "../FormElements/FileDropZone";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

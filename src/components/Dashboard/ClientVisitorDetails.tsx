@@ -1,4 +1,4 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumbs_client";
 import TableClientVisitors from "../Tables/TableClientAllVisitors";
 
 const ClientVisitors = () => {

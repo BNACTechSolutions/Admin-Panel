@@ -1,6 +1,6 @@
 "use client"
 
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumbs_client";
 import TableFour from "../Tables/TableFour_Admin";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";

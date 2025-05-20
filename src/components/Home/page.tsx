@@ -1,36 +1,22 @@
 "use client";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumbs_client";
 import Image from "next/image";
-import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import FileDropZone from "../FormElements/FileDropZone";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import api from "@/api";
-import { toast, Bounce } from "react-toastify";
 
 const HomePage = () => {
-  const [landingTitle, setLandingTitle] = useState<string>("");
-  const [landingImage, setLandingImage] = useState<File | null>(null);
-  const [landingDescription, setLandingDescription] = useState<string>("");
-
-  // User information state
   const [userInfo, setUserInfo] = useState<any>(null);
 
   const router = useRouter();
 
   useEffect(() => {
-    // Check user type in localStorage
     const userType = localStorage.getItem("userType");
     if (userType !== "0") {
-      // Redirect to /auth/signin if userType is invalid
       router.push("/auth/signin");
     }
 
-    // Fetch and set user information from localStorage and parse it to an object
     const userData = localStorage.getItem("userData") || "{}";
-    setUserInfo(JSON.parse(userData));  // Parse the user data string into an object
+    setUserInfo(JSON.parse(userData));
   }, [router]);
 
   const downloadQRCode = () => {

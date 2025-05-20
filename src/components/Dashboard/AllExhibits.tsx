@@ -1,16 +1,5 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import Image from "next/image";
-import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import FileDropZone from "../FormElements/FileDropZone";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumbs_client";
 import TableThree from "../Tables/TableThree";
-
-export const metadata: Metadata = {
-  title: "Next.js Settings | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Settings page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
-};
 
 const AllExhibit = () => {
   return (

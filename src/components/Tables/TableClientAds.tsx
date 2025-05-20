@@ -6,7 +6,7 @@ import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import api from "@/api";
-import Select from "react-select";  // Importing react-select
+import Select from "react-select";
 
 interface ClientAdProps {
   serialNumber: number;
@@ -268,8 +268,7 @@ const AllClientsAdvertisements = () => {
             <tr key={index}>
               <td className="px-4 py-5">{clientAd.serialNumber}</td>
               <td className="px-4 py-5">{clientAd.clientName}</td>
-              <td className="px-4 py-5">
-                <select
+              <td className="px-4 py-5 text-black dark:text-white">                <select
                   value={clientAd.hasAdvertisement}
                   onChange={(e) => handleYesNoChange(index, e.target.value)}
                   disabled={editMode !== index}
@@ -279,8 +278,7 @@ const AllClientsAdvertisements = () => {
                   <option value="No">No</option>
                 </select>
               </td>
-              <td className="px-4 py-5">
-                {clientAd.hasAdvertisement === "Yes" && editMode === index ? (
+              <td className="px-4 py-5 text-black dark:text-white">                {clientAd.hasAdvertisement === "Yes" && editMode === index ? (
                   <Select
                     value={clientAd.advertisement ? { value: clientAd.advertisement, label: clientAd.advertisement } : null}
                     onChange={(selectedOption) => handleAdChange(index, selectedOption)}
@@ -295,8 +293,7 @@ const AllClientsAdvertisements = () => {
                   clientAd.advertisement || "N/A"
                 )}
               </td>
-              <td className="px-4 py-5">
-                {editMode === index ? (
+              <td className="px-4 py-5 text-black dark:text-white">                {editMode === index ? (
                   <>
                     <button
                       onClick={() => handleSave(index)}

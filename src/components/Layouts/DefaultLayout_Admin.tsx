@@ -1,39 +1,35 @@
 "use client";
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 import Sidebar from "@/components/Sidebar/index_admin";
 import Header from "@/components/Header/index_admin";
 
 export default function DefaultLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(0);
+
+  useEffect(() => {
+    setSidebarWidth(256);
+  }, []);
+
   return (
-    <>
-      {/* <!-- ===== Page Wrapper Start ===== --> */}
-      <div className="flex">
-        {/* <!-- ===== Sidebar Start ===== --> */}
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        {/* <!-- ===== Sidebar End ===== --> */}
+    <div className="flex h-screen bg-gray-100 dark:bg-gray-900 overflow-hidden">
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-        {/* <!-- ===== Content Area Start ===== --> */}
-        <div className="relative flex flex-1 flex-col lg:ml-72.5">
-          {/* <!-- ===== Header Start ===== --> */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-          {/* <!-- ===== Header End ===== --> */}
+      <div
+        className={`flex flex-col transition-all duration-300 ease-in-out w-full ${
+          sidebarOpen ? "ml-64" : "ml-0"
+        }`}
+      >
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-          {/* <!-- ===== Main Content Start ===== --> */}
-          <main>
-            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-              {children}
-            </div>
-          </main>
-          {/* <!-- ===== Main Content End ===== --> */}
-        </div>
-        {/* <!-- ===== Content Area End ===== --> */}
+        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-6">
+          <div className="mx-auto max-w-screen-2xl">{children}</div>
+        </main>
       </div>
-      {/* <!-- ===== Page Wrapper End ===== --> */}
-    </>
+    </div>
   );
 }

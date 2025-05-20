@@ -5,11 +5,6 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useParams, usePathname, useRouter } from "next/navigation";
 
 export default function PostPage() {
-    const { slug } = useParams() as { slug: string }
-    const route = useRouter();
-
-  const pathname = usePathname();
-
   return (
     <DefaultLayout>
       <EditExhibit/>

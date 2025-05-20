@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumbs_client";
 import FileDropZone from "../FormElements/FileDropZone";
 import { useRouter } from "next/navigation";
 import api from "@/api";
@@ -97,7 +97,6 @@ const VideoModal: React.FC<VideoModalProps> = ({
 };
 
 
-// Custom Button Component
 const Button: React.FC<{
   onClick?: () => void;
   disabled?: boolean;
@@ -123,20 +122,17 @@ const Button: React.FC<{
   );
 };
 
-// Modal Component from your provided code
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex min-h-screen items-center justify-center px-4">
-        {/* Backdrop */}
         <div
           className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
           onClick={onClose}
         />
 
-        {/* Modal Content */}
         <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-xl dark:bg-boxdark">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-xl font-semibold text-black dark:text-white">

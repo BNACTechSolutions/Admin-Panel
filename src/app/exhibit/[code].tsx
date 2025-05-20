@@ -1,7 +1,4 @@
-import ECommerce from "@/components/Dashboard/Exhibit";
 import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ExhibitUpload from "@/components/Dashboard/Exhibit";
 import { useRouter } from "next/router";
 
 export const metadata: Metadata = {
