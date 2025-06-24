@@ -1,4 +1,5 @@
 export type ExhibitItemProps = {
   title: string;
   code: string;
+  status: number;
 };
