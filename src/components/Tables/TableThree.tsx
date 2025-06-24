@@ -87,6 +87,9 @@ const TableThree = () => {
               <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
                 Exhibit Code
               </th>
+              <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
+                Status
+              </th>
               <th className="px-4 py-4 font-medium text-black dark:text-white">
                 Actions
               </th>
@@ -105,6 +108,23 @@ const TableThree = () => {
                     {exhibit.code}
                   </p>
                 </td>
+                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                  <span
+                    className={`px-3 py-1 rounded-full text-white ${
+                      exhibit.status === 1
+                        ? "bg-green-500"
+                        : exhibit.status === 0
+                        ? "bg-red-500"
+                        : "bg-orange-400"
+                    }`}
+                  >
+                    {exhibit.status === 1
+                      ? "Active"
+                      : exhibit.status === 0
+                      ? "Inactive"
+                      : "Pending"}
+                  </span>
+                </td> 
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
                     <button className="hover:text-primary" onClick={() => editExhibit(exhibit.code)}>
@@ -125,6 +145,34 @@ const TableThree = () => {
                         />
                       </svg>
                     </button>
+                    {exhibit.status === 2 && (
+                      <button
+                        className="px-3 py-1 rounded bg-green-500 text-white hover:bg-green-600"
+                        onClick={async () => {
+                          try {
+                            const response = await api.put(`/api/exhibit/approve/${exhibit.code}`, {}, {
+                              headers: {
+                                Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+                              },
+                            });
+                            if (response.status === 200) {
+                              toast.success('Exhibit approved!');
+                              setExhibits((prev) =>
+                                prev.map((ex) =>
+                                  ex.code === exhibit.code ? { ...ex, status: 1 } : ex
+                                )
+                              );
+                            } else {
+                              toast.error('Failed to approve exhibit');
+                            }
+                          } catch (error) {
+                            toast.error('Failed to approve exhibit');
+                          }
+                        }}
+                      >
+                        Approve
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>
