@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const TableThree = () => {
   const [exhibits, setExhibits] = useState<ExhibitItemProps[]>([]);
+  const [expandedQR, setExpandedQR] = useState<string | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selectedExhibit, setSelectedExhibit] = useState<string | null>(null);
   const router = useRouter();
@@ -87,6 +88,9 @@ const TableThree = () => {
               <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
                 Exhibit Code
               </th>
+              <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white text-center">
+                QR
+              </th>
               <th className="px-4 py-4 font-medium text-black dark:text-white">
                 Actions
               </th>
@@ -104,6 +108,47 @@ const TableThree = () => {
                   <p className="text-black dark:text-white">
                     {exhibit.code}
                   </p>
+                </td>
+                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark text-center align-middle">
+                  {exhibit.qrCode ? (
+                    <div className="flex flex-row items-center justify-center gap-2">
+                      <img
+                        src={exhibit.qrCode}
+                        alt="QR"
+                        className="w-20 h-20 object-contain border rounded cursor-pointer hover:shadow-lg"
+                        onClick={() => setExpandedQR(expandedQR === exhibit.code ? null : exhibit.code)}
+                        title="Expand QR"
+                      />
+                      <a
+                        href={exhibit.qrCode}
+                        download={`exhibit-qr-${exhibit.code}.png`}
+                        className="ml-2 text-gray-500 hover:text-blue-600"
+                        title="Download QR"
+                        onClick={e => e.stopPropagation()}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+                        </svg>
+                      </a>
+                      {expandedQR === exhibit.code && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60" onClick={() => setExpandedQR(null)}>
+                          <div className="bg-white p-6 rounded-lg shadow-2xl flex flex-col items-center relative" onClick={e => e.stopPropagation()}>
+                            <button className="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl font-bold" onClick={() => setExpandedQR(null)}>&times;</button>
+                            <img src={exhibit.qrCode} alt="QR Large" className="w-72 h-72 object-contain border rounded mb-2" />
+                            <a
+                              href={exhibit.qrCode}
+                              download={`exhibit-qr-${exhibit.code}.png`}
+                              className="text-blue-600 underline hover:text-blue-800 mt-2"
+                            >
+                              Download
+                            </a>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="text-xs text-gray-400">N/A</span>
+                  )}
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
